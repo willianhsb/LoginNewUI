@@ -1,0 +1,179 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
+import 'package:apptest/components/my_button.dart';
+import 'package:apptest/components/my_textfield.dart';
+import 'package:apptest/components/square_tile.dart';
+import 'package:flutter/material.dart';
+
+class LoginPage extends StatelessWidget {
+  LoginPage({Key? key}) : super(key: key);
+
+  //Controller dos Campos Texto e Senha
+
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  // Metodo UsuarioLogado
+
+  void usuarioLogado() {}
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[300],
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 50),
+                //logo
+                const Icon(
+                  Icons.lock,
+                  size: 100,
+                ),
+                const SizedBox(height: 50),
+
+                //bem vindo
+
+                Text(
+                  "Bem Vindo de volta, você fez falta!",
+                  style: TextStyle(
+                    color: Colors.grey[700],
+                    fontSize: 16,
+                  ),
+                ),
+
+                const SizedBox(height: 25),
+
+                //nome usuario
+
+                MyTextField(
+                  controller: usernameController,
+                  hintText: 'Nome de Usuário',
+                  obscureText: false,
+                ),
+
+                const SizedBox(height: 10),
+
+                //senha usuario
+
+                MyTextField(
+                  controller: passwordController,
+                  hintText: 'Senha',
+                  obscureText: true,
+                ),
+
+                const SizedBox(height: 10),
+
+                //esqueceu a senha?
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Esqueceu sua senha?',
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                //botão login
+
+                MyButton(
+                  onTap: usuarioLogado,
+                ),
+
+                const SizedBox(height: 50),
+
+                //ou continue para
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Divider(
+                          thickness: 0.5,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                          'Ou continue com',
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Divider(
+                          thickness: 0.5,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 50),
+
+                //google + apple login
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SquereTile(
+                      imagePath: 'lib/images/google.png',
+                    ),
+
+                    SizedBox(height: 25),
+
+                    SquereTile(
+                      imagePath: 'lib/images/apple.png',
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 50),
+
+                //não é membro? registre-se
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'não é membro?',
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      'Registre-se agora!',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
