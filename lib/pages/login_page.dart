@@ -131,16 +131,12 @@ class LoginPage extends StatelessWidget {
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SquereTile(
-                      imagePath: 'lib/images/google.png',
-                    ),
+                  children:  [
+                    SquereTile(imagePath: 'lib/images/google.png'),
 
-                    SizedBox(height: 25),
+                    SizedBox(height: 10),
 
-                    SquereTile(
-                      imagePath: 'lib/images/apple.png',
-                    ),
+                    SquereTile(imagePath: 'lib/images/apple.png'),
                   ],
                 ),
 
@@ -169,6 +165,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 50),
               ],
             ),
           ),
