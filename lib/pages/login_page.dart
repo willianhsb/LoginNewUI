@@ -3,19 +3,40 @@
 import 'package:apptest/components/my_button.dart';
 import 'package:apptest/components/my_textfield.dart';
 import 'package:apptest/components/square_tile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
-  //Controller dos Campos Texto e Senha
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
 
-  final usernameController = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
+  //Controller dos Campos Texto e Senha
+  final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   // Metodo UsuarioLogado
-
-  void usuarioLogado() {}
+  void signUserIn() async {
+    // mostrar circulo carregando
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    );
+    //Apos carregar o circular progress indicator
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +71,7 @@ class LoginPage extends StatelessWidget {
                 //nome usuario
 
                 MyTextField(
-                  controller: usernameController,
+                  controller: emailController,
                   hintText: 'Nome de Usuário',
                   obscureText: false,
                 ),
@@ -89,7 +110,7 @@ class LoginPage extends StatelessWidget {
                 //botão login
 
                 MyButton(
-                  onTap: usuarioLogado,
+                  onTap: signUserIn,
                 ),
 
                 const SizedBox(height: 50),
@@ -130,12 +151,10 @@ class LoginPage extends StatelessWidget {
                 //google + apple login
 
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children:  [
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
                     SquereTile(imagePath: 'lib/images/google.png'),
-
                     SizedBox(height: 10),
-
                     SquereTile(imagePath: 'lib/images/apple.png'),
                   ],
                 ),
