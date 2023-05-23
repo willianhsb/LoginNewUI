@@ -3,6 +3,7 @@
 import 'package:apptest/components/my_button.dart';
 import 'package:apptest/components/my_textfield.dart';
 import 'package:apptest/components/square_tile.dart';
+import 'package:apptest/services/auth_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   //Controller dos Campos Texto e Senha
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
 
   // Metodo UsuarioLogado
@@ -30,12 +30,48 @@ class _LoginPageState extends State<LoginPage> {
         );
       },
     );
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailController.text,
-      password: passwordController.text,
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      //Apos carregar o circular progress indicator
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      //email inexistentec
+      Navigator.pop(context);
+      if (e.code == "user-not-found") {
+        // mostrar mensagem ao usuario
+        wrongEmailMessage();
+      }
+      //senha incorreta
+      else if (e.code == "wrong-password") {
+        // mostrar mensagem ao usuario
+        wrongPasswordMessage();
+      }
+    }
+  }
+
+  void wrongEmailMessage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("E-mail Incorreto!"),
+        );
+      },
     );
-    //Apos carregar o circular progress indicator
-    Navigator.pop(context);
+  }
+
+  void wrongPasswordMessage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Senha Incorreta!"),
+        );
+      },
+    );
   }
 
   @override
@@ -151,11 +187,17 @@ class _LoginPageState extends State<LoginPage> {
                 //google + apple login
 
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SquereTile(imagePath: 'lib/images/google.png'),
-                    SizedBox(height: 10),
-                    SquereTile(imagePath: 'lib/images/apple.png'),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:  [
+                    SquereTile(
+                      onTap: () => AuthService().signInWithGoogle(),
+                      imagePath: 'lib/images/google.png',
+                    ),
+                    SizedBox(width: 25),
+                    SquereTile(
+                      onTap:(){},
+                      imagePath: 'lib/images/apple.png',
+                    ),
                   ],
                 ),
 
