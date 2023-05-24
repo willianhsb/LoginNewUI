@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously, prefer_const_constructors_in_immutables
 
 import 'package:apptest/components/my_button.dart';
 import 'package:apptest/components/my_textfield.dart';
@@ -8,7 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+  final Function()? onTap;
+  LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -40,35 +41,21 @@ class _LoginPageState extends State<LoginPage> {
     } on FirebaseAuthException catch (e) {
       //email inexistentec
       Navigator.pop(context);
-      if (e.code == "user-not-found") {
-        // mostrar mensagem ao usuario
-        wrongEmailMessage();
-      }
-      //senha incorreta
-      else if (e.code == "wrong-password") {
-        // mostrar mensagem ao usuario
-        wrongPasswordMessage();
-      }
+      showErrorMesage(e.code);
     }
   }
-
-  void wrongEmailMessage() {
+  // mensagem de erro ao usuario
+  void showErrorMesage(String message) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("E-mail Incorreto!"),
-        );
-      },
-    );
-  }
-
-  void wrongPasswordMessage() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Senha Incorreta!"),
+          backgroundColor: Colors.deepPurple,
+          title: Center(
+            child: Text(
+             message,
+            ),
+          ),
         );
       },
     );
@@ -146,6 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                 //botão login
 
                 MyButton(
+                  text: "Entrar",
                   onTap: signUserIn,
                 ),
 
@@ -188,14 +176,14 @@ class _LoginPageState extends State<LoginPage> {
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children:  [
+                  children: [
                     SquereTile(
                       onTap: () => AuthService().signInWithGoogle(),
                       imagePath: 'lib/images/google.png',
                     ),
                     SizedBox(width: 25),
                     SquereTile(
-                      onTap:(){},
+                      onTap: () {},
                       imagePath: 'lib/images/apple.png',
                     ),
                   ],
@@ -217,11 +205,14 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       width: 4,
                     ),
-                    Text(
-                      'Registre-se agora!',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: Text(
+                        'Registre-se agora!',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
